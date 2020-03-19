@@ -1,5 +1,7 @@
 $(document).ready(function () {
 
+    var windowHeight = $(window).height(); //to get height of window
+
     function getRandomInt(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
@@ -9,10 +11,12 @@ $(document).ready(function () {
     function makeBird() {
         return { // return to objects addBird:function & init:function as properties
 
-            birdId: null,//create a new property and empty until id given
+            birdId: null,//create a new property, empty until id given
             birdSize: null, // integer
             movementRatio: null, // to be divided from scrolling pixels
             topOffset: null,
+            bounceRate: null,
+
             addBird: function () {
                 var _newBird = document.createElement('img');
 
@@ -25,33 +29,113 @@ $(document).ready(function () {
                 _newBird.style.top = this.topOffset + '%';
                 _newBird.style.filter = 'hue-rotate(' + getRandomInt(0, 270) + 'deg)';
 
-                // _newBird.id = 'bird'; //styling with #bird
-                document.body.appendChild(_newBird);
+                document.body.appendChild(_newBird); // create a new bird in body
             },
 
             fly: function (scrollDistance) {
                 document.getElementById(this.birdId).style.left = this.birdSize + scrollDistance / this.movementRatio + 'px';
+
+                if (!$('#' + this.birdId).is(':animated')) {
+                    $('#' + this.birdId).animate({ 'top': '+=100px' }, this.bounceRate).animate({ 'top': '-=100px' }, this.bounceRate);
+                }
             },
 
-            init: function () {// need to create document.body.appendChild(_newBird);
+            init: function () {
                 this.topOffset = getRandomInt(10, 70);
                 this.movementRatio = getRandomInt(10, 50);
                 this.birdId = 'bird_' + getRandomInt(0, 12345);
-                this.birdSize = getRandomInt(0, 500);
-                this.addBird();
+                this.birdSize = getRandomInt(10, 500);
+                this.bounceRate = getRandomInt(100, 500);
+                this.addBird(); // to execute document.body.appendChild(_newBird);
             }
+        };
+    }
+
+    function makePipe() {
+        return {
+
+            pipeId: null,//create a new property and empty until id given
+            pipeSize: null, // integer
+            movementRatio: null, // to be divided from scrolling pixels
+            leftOffset: null,
+            flip: false,
+
+            addPipe: function () {
+                var _newPipe = document.createElement('img');
+
+                _newPipe.src = 'assets/pipe.png';
+                _newPipe.id = this.pipeId;
+                _newPipe.style.height = this.pipeSize + 'px';
+                _newPipe.style.left = this.leftOffset + 'px';
+
+                if (this.flip) {
+                    _newPipe.style.top = 0;
+                    _newPipe.style.transform = 'rotate(180deg)';
+                } else {
+                    _newPipe.style.top = windowHeight - this.pipeSize + 'px';
+                }
+
+                document.body.appendChild(_newPipe);
+            },
+
+            moveLeft: function (scrollDistance) {
+                document.getElementById(this.pipeId).style.left = this.leftOffset + scrollDistance / this.movementRatio + 'px';
+            },
+
+            init: function (flip) {
+                this.pipeId = 'pipe_' + getRandomInt(0, 12345);
+                this.pipeSize = getRandomInt(0, 500);
+                this.movementRatio = this.pipeSize / 10;
+                this.leftOffset = getRandomInt(50, 200);
+                this.flip = (flip === true);
+                this.addPipe();
+            },
         };
     }
 
     var bird1 = makeBird(), //bird1 = "object"{addBird:function(){}, init: function(){}}
         bird2 = makeBird(),
         bird3 = makeBird(),
-        bird4 = makeBird();
+        bird4 = makeBird(),
+        bird5 = makeBird(),
+        bird6 = makeBird(),
+        bird7 = makeBird(),
+        bird8 = makeBird();
 
     bird1.init(); //bird1.addBird()cannot be used because addBird() contains more than one function
     bird2.init();
     bird3.init();
     bird4.init();
+    bird5.init();
+    bird6.init();
+    bird7.init();
+    bird8.init();
+
+    // a new instance 
+    var pipe1 = makePipe(),
+        pipe2 = makePipe(),
+        pipe3 = makePipe(),
+        pipe4 = makePipe(),
+        pipe5 = makePipe(),
+        pipe6 = makePipe(),
+        pipe7 = makePipe(),
+        pipe8 = makePipe(),
+        pipe9 = makePipe(),
+        pipe10 = makePipe();
+
+    pipe1.init();
+    pipe2.init();
+    pipe3.init();
+    pipe4.init();
+    pipe5.init();
+    pipe6.init();
+    pipe7.init();
+    pipe8.init();
+    pipe9.init();
+    pipe10.init(true);
+
+
+
 
     //$('#pipe').css('top, $(window).height()-$('#pipe').height() + 'px');
     $(window).scroll(function (event) {
@@ -66,11 +150,29 @@ $(document).ready(function () {
         // move these elements sideway
         $('#background').css('background-position', imgX + 'px 0px');
         //$('#bird').css('left', birdX);
-        $('#pipe').css('left', pipeX);
+        // $('#pipe').css('left', pipeX);
+
         bird1.fly(offset);
         bird2.fly(offset);
         bird3.fly(offset);
         bird4.fly(offset);
+        bird5.fly(offset);
+        bird6.fly(offset);
+        bird7.fly(offset);
+        bird8.fly(offset);
+
+        pipe1.moveLeft(offset);
+        pipe2.moveLeft(offset);
+        pipe3.moveLeft(offset);
+        pipe4.moveLeft(offset);
+        pipe5.moveLeft(offset);
+        //pipe6.moveLeft(offset);
+        pipe7.moveLeft(offset);
+        pipe8.moveLeft(offset);
+        pipe9.moveLeft(offset);
+        //pipe10.moveLeft(offset);
+
+        ``
 
         $(document).on('click', flyUp);
 
