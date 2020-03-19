@@ -54,7 +54,7 @@ $(document).ready(function () {
         console.log(imgX);
         // move these elements sideway
         $('#background').css('background-position', imgX + 'px 0px');
-        // $('#bird').css('left', pipeX);
+        $('#bird').css('left', pipeX);
         $('#pipe').css('left', birdX);
 
         $(document).on('click', flyUp);
