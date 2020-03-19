@@ -37,7 +37,7 @@ $(document).ready(function () {
                 this.topOffset = getRandomInt(10, 70);
                 this.movementRatio = getRandomInt(10, 50);
                 this.birdId = 'bird_' + getRandomInt(0, 12345);
-                this.birdSize = getRandomInt(0, 500) + 'px';
+                this.birdSize = getRandomInt(0, 500);
                 this.addBird();
             }
         };
