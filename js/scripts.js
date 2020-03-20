@@ -79,63 +79,42 @@ $(document).ready(function () {
             },
 
             moveLeft: function (scrollDistance) {
-                document.getElementById(this.pipeId).style.left = this.leftOffset + scrollDistance / this.movementRatio + 'px';
+                document.getElementById(this.pipeId).style.left = this.leftOffset - scrollDistance / this.movementRatio + 'px';
             },
 
             init: function (flip) {
                 this.pipeId = 'pipe_' + getRandomInt(0, 12345);
-                this.pipeSize = getRandomInt(0, 500);
+                this.pipeSize = getRandomInt(100, 500);
                 this.movementRatio = this.pipeSize / 10;
-                this.leftOffset = getRandomInt(50, 200);
+                this.leftOffset = getRandomInt(200, 2000);
                 this.flip = (flip === true);
                 this.addPipe();
             },
         };
     }
 
-    var bird1 = makeBird(), //bird1 = "object"{addBird:function(){}, init: function(){}}
-        bird2 = makeBird(),
-        bird3 = makeBird(),
-        bird4 = makeBird(),
-        bird5 = makeBird(),
-        bird6 = makeBird(),
-        bird7 = makeBird(),
-        bird8 = makeBird();
+    function renderElements() {
+        window.birds = [];
+        window.pipes = [];
+        window.flippedPipes = [];
 
-    bird1.init(); //bird1.addBird()cannot be used because addBird() contains more than one function
-    bird2.init();
-    bird3.init();
-    bird4.init();
-    bird5.init();
-    bird6.init();
-    bird7.init();
-    bird8.init();
+        for (var i = 0; i < 10; i++) {
+            window.birds[i] = makeBird();
+            window.birds[i].init();
+        }
 
-    // a new instance 
-    var pipe1 = makePipe(),
-        pipe2 = makePipe(),
-        pipe3 = makePipe(),
-        pipe4 = makePipe(),
-        pipe5 = makePipe(),
-        pipe6 = makePipe(),
-        pipe7 = makePipe(),
-        pipe8 = makePipe(),
-        pipe9 = makePipe(),
-        pipe10 = makePipe();
+        for (var i = 0; i < 10; i++) {
+            window.pipes[i] = makePipe();
+            window.pipes[i].init();
+        }
 
-    pipe1.init();
-    pipe2.init();
-    pipe3.init();
-    pipe4.init();
-    pipe5.init();
-    pipe6.init();
-    pipe7.init();
-    pipe8.init();
-    pipe9.init();
-    pipe10.init(true);
+        for (var i = 0; i < 10; i++) {
+            window.flippedPipes[i] = makePipe();
+            window.flippedPipes[i].init(true);
+        }
+    }
 
-
-
+    renderElements();
 
     //$('#pipe').css('top, $(window).height()-$('#pipe').height() + 'px');
     $(window).scroll(function (event) {
@@ -143,59 +122,26 @@ $(document).ready(function () {
 
         // $(window).scrollTop gives you the distance to the top of the page
         var imgX = offset / 50;
-        var pipeX = offset / 20;
-        var birdX = offset / 10;
+        //var pipeX = offset / 20;
+        //var birdX = offset / 10;
+
+        for (var i = 0; i < window.birds.length; i++) {
+            window.birds[i].fly(offset);
+        }
+
+        for (var i = 0; i < window.pipes.length; i++) {
+            window.pipes[i].moveLeft(offset);
+        }
+
+        for (var i = 0; i < window.flippedPipes.length; i++) {
+            window.flippedPipes[i].moveLeft(offset);
+        }
+
 
         console.log(imgX);
         // move these elements sideway
         $('#background').css('background-position', imgX + 'px 0px');
-        //$('#bird').css('left', birdX);
-        // $('#pipe').css('left', pipeX);
-
-        bird1.fly(offset);
-        bird2.fly(offset);
-        bird3.fly(offset);
-        bird4.fly(offset);
-        bird5.fly(offset);
-        bird6.fly(offset);
-        bird7.fly(offset);
-        bird8.fly(offset);
-
-        pipe1.moveLeft(offset);
-        pipe2.moveLeft(offset);
-        pipe3.moveLeft(offset);
-        pipe4.moveLeft(offset);
-        pipe5.moveLeft(offset);
-        //pipe6.moveLeft(offset);
-        pipe7.moveLeft(offset);
-        pipe8.moveLeft(offset);
-        pipe9.moveLeft(offset);
-        //pipe10.moveLeft(offset);
-
-        ``
-
-        $(document).on('click', flyUp);
-
-        function flyDown() {
-            $('#bird').attr('style', 'transform: rotate(45deg)');
-            $('#bird').animate({ 'top': "+=100px" }, 500);
-        }
-
-        function flyUp() {
-            $('#bird').animate({ 'top': "-=100px" }, 500);
-            flyDown();
-        }
-
-        /* setInterval(function () {
-            $('#bird').animate({ 'top': "-=100px" }, 500);
-            $('#bird').css('transform', 'rotate(' + 45 + 'deg)');
-            $('#bird').animate({ 'top': "+=100px" }, 500);
-        }, 1100); */
-
 
     });
 
-    /* console.log(event);
-        console.log(event.pageX);
-        console.log(event.pageY); */
 });
